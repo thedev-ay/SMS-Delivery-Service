@@ -1,0 +1,32 @@
+{
+    "name": "sms-delivery-service",
+    "version": "1.0.0",
+    "description": "SMS Delivery Service",
+    "scripts": {
+        "lint": "tslint -p tsconfig.json -c tslint.json",
+        "lint:fix": "tslint -p tsconfig.json -c tslint.json --fix",
+        "deploy:test": "serverless deploy -s test --verbose",
+        "test": "./node_modules/.bin/nyc mocha --require ts-node/register test/**/*Test.ts"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.51",
+        "@types/chai": "^4.3.1",
+        "@types/mocha": "^9.1.1",
+        "@types/sinon": "^10.0.11",
+        "aws-sdk": "^2.1166.0",
+        "chai": "^4.3.6",
+        "mocha": "^9.2.2",
+        "nyc": "^15.1.0",
+        "serverless-plugin-typescript": "^2.1.2",
+        "sinon": "^13.0.2",
+        "ts-node": "^8.9.1",
+        "tslint": "^6.1.2",
+        "tslint-config-standard": "^9.0.0",
+        "typescript": "^3.8.3"
+    },
+    "author": "Alexandre Ytac",
+    "license": "ISC",
+    "dependencies": {
+        "winston": "^3.8.0"
+    }
+}

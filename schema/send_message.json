@@ -1,0 +1,17 @@
+{
+    "definitions": {},
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "title": "The Root Schema",
+    "required": ["recipient", "message"],
+    "properties": {
+        "recipient": {
+            "type": "string",
+            "title": "Recipient"
+        },
+        "message": {
+            "type": "string",
+            "title": "Message"
+        }
+    }
+}

@@ -1,0 +1,65 @@
+service: sms-delivery
+
+provider:
+  name: aws
+  stage: test
+  region: ap-southeast-1
+  runtime: nodejs14.x
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+       - "dynamodb:*"
+      Resource:
+        - "${file(env.yml):${self:custom.stage}.config.tblMessagesArn}"
+    - Effect: "Allow"
+      Action:
+        - sns:Publish
+      Resource:
+        - "*"
+  apiGateway:
+    apiKeys:
+      - "${self:custom.stage}-trial-key"
+    usagePlan:
+      quota:
+        limit: 50
+        offset: 2
+        period: MONTH
+      throttle:
+        burstLimit: 3
+        rateLimit: 5
+  environment: ${file(env.yml):${self:custom.stage}.environment}
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+
+plugins:
+  - serverless-plugin-typescript 
+
+functions:
+  sendMessage:
+    handler: src/MessageHandler.sendMessage
+    events:
+      - http:
+          path: /api/message
+          method: POST
+          private: true
+          request:
+            schemas:
+              application/json:
+                schema: ${file(schema/send_message.json)}
+                name: SendMessageModel
+                description: 'Validation model for Sending Messages'
+  getMessages:
+    handler: src/MessageHandler.getMessages
+    events:
+      - http:
+          path: /api/messages
+          method: GET
+          private: true
+          request:
+            parameters:
+              querystrings:
+                recipient: true
+
+package:
+  individually: true
